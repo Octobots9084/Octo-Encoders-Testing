@@ -20,9 +20,50 @@
 
 package org.octobots.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
+    private WPI_TalonFX motor1;
+    private final DutyCycleEncoder dutyCycleEncoder = new DutyCycleEncoder(7);
+
+    @Override
+    public void teleopInit() {
+        // Create talonfx (need to test talonsrx)
+        this.motor1 = new WPI_TalonFX(15, "can1");
+
+        // Set selected sensor for the talon (Unclear whether needed to get the absolute position of the internal sensor (needs testing))
+        this.motor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 30);
+
+        // Set coast mode (could be why setting position isn't working?)
+        this.motor1.setNeutralMode(NeutralMode.Coast);
+
+        // Apparently set sensor phase does nothing (need to test on robot)
+        this.motor1.setSensorPhase(false);
+
+        // Create external encoder
+        this.dutyCycleEncoder.setDistancePerRotation(Math.PI * 2);
+
+    }
+
+    public void teleopPeriodic() {
+        //this.motor1.set(ControlMode.PercentOutput,0.2);
+        this.motor1.set(ControlMode.Position, 10000);
+
+        // Output talonfx absolute position
+        SmartDashboard.putNumber("Position", this.motor1.getSensorCollection().getIntegratedSensorAbsolutePosition());
+
+        // Output external encoder absolute position
+        SmartDashboard.putNumber("Duty Cycle Encoder", this.dutyCycleEncoder.getAbsolutePosition());
+    }
+
+
 
 }
 
