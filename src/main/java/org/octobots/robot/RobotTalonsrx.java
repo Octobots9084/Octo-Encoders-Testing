@@ -34,7 +34,7 @@ public class RobotTalonsrx extends TimedRobot {
     @Override
     public void teleopInit() {
         // Create talonfx (need to test talonsrx)
-        this.motor1 = new WPI_TalonSRX(8);
+        this.motor1 = new WPI_TalonSRX(6);
 
         this.motor1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 12, 12, 0.05)); //How much current can be supplied to the motor
 
@@ -96,12 +96,12 @@ public class RobotTalonsrx extends TimedRobot {
 
     public void teleopPeriodic() {
         //this.motor1.set(ControlMode.PercentOutput,0.2);
-        this.motor1.set(ControlMode.Position, 1000);
+        this.motor1.set(ControlMode.Position, 0);
 
         // Output talonfx absolute position
 //        SmartDashboard.putNumber("Absolute Position", this.motor1.getSensorCollection().getIntegratedSensorAbsolutePosition());
 //        SmartDashboard.putNumber("Position", this.motor1.getSensorCollection().getIntegratedSensorPosition());
-        SmartDashboard.putNumber("Absolute Position", this.motor1.getSensorCollection().getQuadraturePosition());
+        SmartDashboard.putNumber("Absolute Position", this.motor1.getSensorCollection().getPulseWidthPosition());
 
         // Output external encoder absolute position
         //SmartDashboard.putNumber("Duty Cycle Encoder", this.dutyCycleEncoder.getAbsolutePosition());
