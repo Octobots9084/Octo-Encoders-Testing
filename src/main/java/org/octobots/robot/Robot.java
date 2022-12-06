@@ -20,23 +20,18 @@
 
 package org.octobots.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.revrobotics.SparkMaxAlternateEncoder;
 
-public class RobotSparkMax extends TimedRobot {
+public class Robot extends TimedRobot {
     private static final int deviceID = 1;
     private CANSparkMax m_motor;
     private SparkMaxPIDController m_pidController;
-    private RelativeEncoder m_encoder;
+    private SparkMaxAlternateEncoder m_encoder;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
     @Override
@@ -57,10 +52,7 @@ public class RobotSparkMax extends TimedRobot {
          * CANSparkMax object
          */
         m_pidController = m_motor.getPIDController();
-
-        // Encoder object created to display position values
-        m_encoder = m_motor.getEncoder();
-
+        m_pidController.setFeedbackDevice(m_encoder);
         // PID coefficients
         kP = 0.1;
         kI = 1e-4;
